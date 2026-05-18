@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import logger from '../logs/logger.js';
 
 // --- Global Email Configuration and Transporter Function ---
 /**
@@ -57,7 +56,6 @@ const createTransporter = () => {
 //     return info;
 //   } catch (error) {
 //     console.error('Error sending OTP email:', error);
-//     logger.error('Error sending OTP email:', error);
 //     throw new Error('Failed to send OTP email.');
 //   }
 // };
@@ -161,7 +159,6 @@ export const sendOtpEmail = async (toEmail, otp) => {
     return info;
   } catch (error) {
     console.error('❌ Error sending OTP email:', error);
-    logger.error('Error sending OTP email:', error);
     throw new Error('Failed to send OTP email.');
   }
 };

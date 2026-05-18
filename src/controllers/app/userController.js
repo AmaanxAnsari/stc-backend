@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import logger from '../../logs/logger.js';
 import { User } from '../../models/app/user.js';
 import { Consumer } from '../../models/app/consumerModel.js';
 import { Retailer } from './../../models/app/retailerModel.js';
@@ -346,7 +345,6 @@ export const updateUser = async (req, res) => {
       });
     }
 
-    logger?.error?.('Error updating user:', error);
     return res.status(500).json({
       success: false,
       message: 'Server error while updating user.',
@@ -480,7 +478,6 @@ export const deleteAddress = async (req, res) => {
 //       data: user,
 //     });
 //   } catch (error) {
-//     logger.error('Error registering consumer:', error);
 //     res.status(500).json({
 //       success: false,
 //       message: 'Server error while registering consumer.',
@@ -548,7 +545,6 @@ export const registerConsumer = async (req, res) => {
         },
       }).catch((err) => {
         console.error('❌ Admin notification failed:', err);
-        logger.error('Admin notification failed:', err);
       });
     }
 
@@ -558,7 +554,6 @@ export const registerConsumer = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    logger.error('Error registering consumer:', error);
     res.status(500).json({
       success: false,
       message: 'Server error while registering consumer.',
@@ -646,7 +641,6 @@ export const updateConsumer = async (req, res) => {
       });
     }
 
-    logger.error('Error updating consumer:', error);
     return res.status(500).json({
       success: false,
       message: 'Server error while updating consumer.',

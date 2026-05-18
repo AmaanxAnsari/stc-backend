@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import logger from '../../logs/logger.js';
 import AdminUser  from '../../models/admin/adminUser.js';
 import Module from '../../models/admin/moduleModel.js';
 import Role from '../../models/admin/roleModel.js';
@@ -94,7 +93,6 @@ export const createUser = async (req, res) => {
       data: newUser,
     });
   } catch (error) {
-    logger.error('Error creating user:', error);
     res
       .status(500)
       .json({ success: false, message: 'Server error', error: error.message });
@@ -193,7 +191,6 @@ export const updateUser = async (req, res) => {
       data: payload,
     });
   } catch (error) {
-    logger.error('Error updating user:', error);
     res.status(500).json({
       success: false,
       message: 'Internal Server error',

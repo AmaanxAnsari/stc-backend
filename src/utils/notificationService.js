@@ -2,7 +2,6 @@ import { messaging } from '../config/firebase-admin.js';
 import FCMToken from '../models/admin/fcmTokenModel.js';
 import Notification from '../models/admin/notificationModel.js';
 import nodemailer from 'nodemailer';
-import logger from '../logs/logger.js';
 import { emailTemplates } from '../templates/emailTemplates.js';
 import { notificationTemplates } from '../templates/notificationTemplates.js';
 import { User } from '../models/app/user.js';
@@ -54,7 +53,6 @@ export const sendOtpEmail = async (toEmail, otp) => {
     return info;
   } catch (error) {
     console.error('Error sending OTP email:', error);
-    logger.error('Error sending OTP email:', error);
     throw new Error('Failed to send OTP email.');
   }
 };
@@ -190,12 +188,10 @@ export const sendEmailNotification = async (userEmail, emailData) => {
 
     const info = await transporter.sendMail(mailOptions);
     console.log(`✅ Email sent to ${userEmail}:`, info.messageId);
-    logger.info(`Email sent to ${userEmail}:`, info.messageId);
 
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Email error:', error);
-    logger.error('Email error:', error);
     return { success: false, error: error.message };
   }
 };
