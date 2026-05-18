@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import AdminUser  from './../../models/admin/adminUser.js';
 import { generateToken } from '../../utils/jwtUtils.js';
 import Otp from '../../models/admin/otpModel.js';
-import logger from './../../logs/logger.js';
 
 
 export const login = async (req, res) => {
@@ -65,7 +64,6 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    logger.error('Error creating user:', error);
     res
       .status(500)
       .json({ success: false, message: 'Server error', error: error.message });
