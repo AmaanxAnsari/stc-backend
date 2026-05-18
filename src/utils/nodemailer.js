@@ -1,15 +1,5 @@
 import nodemailer from 'nodemailer';
 
-// --- Global Email Configuration and Transporter Function ---
-/**
- * Creates and returns a Nodemailer transporter object.
- * This function encapsulates the SMTP server configuration.
- *
- * IMPORTANT: For production, use environment variables for sensitive data
- * like email and password.
- *
- * @returns {object} A Nodemailer transporter object.
- */
 const createTransporter = () => {
   return nodemailer.createTransport({
     host: 'smtp.gmail.com', // e.g., 'smtp.gmail.com' for Gmail, 'smtp.mail.yahoo.com' for Yahoo
@@ -28,37 +18,7 @@ const createTransporter = () => {
   });
 };
 
-// export const sendOtpEmail = async (toEmail, otp) => {
-//   const transporter = createTransporter();
 
-//   const mailOptions = {
-//     from: 'Compumatrix Technologies',
-//     to: toEmail,
-//     subject: 'Your OTP for Verification',
-//     html: `
-//             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-//                 <h2 style="color: #0056b3;">OTP Verification</h2>
-//                 <p>Hello,</p>
-//                 <p>Your One-Time Password (OTP) for verification is:</p>
-//                 <h3 style="color: #0056b3; background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-align: center; letter-spacing: 2px;">
-//                     <strong>${otp}</strong>
-//                 </h3>
-//                 <p>This OTP is valid for a limited time. Please do not share it with anyone.</p>
-//                 <p>If you did not request this, please ignore this email.</p>
-//                 <p>Thank you!</p>
-//             </div>
-//         `,
-//   };
-
-//   try {
-//     let info = await transporter.sendMail(mailOptions);
-//     console.log('OTP Email sent: %s', info.messageId);
-//     return info;
-//   } catch (error) {
-//     console.error('Error sending OTP email:', error);
-//     throw new Error('Failed to send OTP email.');
-//   }
-// };
 
 
 export const sendOtpEmail = async (toEmail, otp) => {
