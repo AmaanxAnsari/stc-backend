@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import logger from '../../logs/logger.js';
+import logger from './../../logs/logger.js';
 import { generateToken } from '../../utils/jwtUtils.js';
 import { Consumer } from '../../models/app/consumerModel.js';
 import { User } from '../../models/app/user.js';
