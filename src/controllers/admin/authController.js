@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import AdminUser  from './../../models/admin/adminUser.js';
 import { generateToken } from '../../utils/jwtUtils.js';
 import Otp from '../../models/admin/otpModel.js';
+import logger from './../../logs/logger';
 
 
 export const login = async (req, res) => {
