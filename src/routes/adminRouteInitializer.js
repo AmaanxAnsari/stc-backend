@@ -1,0 +1,67 @@
+import authRoutes from './admin/authRoutes.js';
+import userRoutes from './admin/userRoutes.js';
+import categoryRoutes from './admin/categoryRoutes.js';
+import roleRoutes from './admin/roleRoutes.js';
+import moduleRoutes from './admin/moduleRoutes.js';
+import profileRoutes from './admin/profileRoutes.js';
+import productRoutes from './admin/productRoutes.js';
+import appOrderRoutes from './admin/appOrderRoutes.js';
+import replacementOrderRoutes from './admin/ReplacementOrderRoute.js';
+import bulkOrderRoutes from './admin/BulkOrderRoutes.js';
+import SpotOrderRoutes from './admin/SpotOrderRoutes.js';
+import InventoryRoutes from './admin/InventoryRoutes.js';
+import InVanInventoryRoutes from './admin/InVanInventoryRoutes.js';
+import InVanInventoryRoutesV2 from './admin/InVanInventoryRoutesV2.js';
+import couponsRoutes from './admin/couponsRoutes.js';
+import tosRoutes from './admin/termsOfServiceRouts.js';
+import deliveryStopRoutes from './admin/deliveryStopRoutes.js';
+import deliveryRouteRoutes from './admin/deliveryRouteRoutes.js';
+import deliveryRoutesV2 from './admin/deliveryRoutesV2.js';
+import basicRouteRoutes from './admin/basicRouteRoutes.js';
+import deliveryVehicleRoutes from './admin/deliveryVehicleRoutes.js';
+import fcmTokenRoutes from './admin/fcmTokenRoutes.js';
+import notificationRoutes from './admin/notificationRoutes.js';
+import dashboardRoutes from './admin/dashboardRoutes.js';
+import InvoiceRoutes from './admin/InvoiceRoutes.js';
+import logsRoutes from './admin/logsRoutes.js';
+import companyConfigRoutes from './admin/companyConfigRoutes.js';
+import PaymentReceivedRoute from './admin/PaymentReceivedRoute.js';
+import faceTecRoutes from './admin/faceTecRoutes.js';
+import AssignOrderToPartnerRoutes from './admin/AssignOrderToPartnerRoutes.js';
+import enquiryRoutes from './admin/enquiryRoutes.js';
+
+
+export default function adminRouteInitializer(app) {
+  app.use('/api/v1/admin/users', userRoutes);
+  app.use('/api/v1/admin/enquiries', enquiryRoutes);
+  app.use('/api/v1/admin/category', categoryRoutes);
+  app.use('/api/v1/admin/product', productRoutes);
+  app.use('/api/v1/admin/app-orders', appOrderRoutes);
+  app.use('/api/v1/admin/replacement-orders', replacementOrderRoutes);
+  app.use('/api/v1/admin/bulk-orders', bulkOrderRoutes);
+  app.use('/api/v1/admin/spot-orders', SpotOrderRoutes);
+  app.use('/api/v1/admin/orders', PaymentReceivedRoute);
+  app.use('/api/v1/admin/delivery-stops', deliveryStopRoutes);
+  app.use('/api/v1/admin/delivery-routes-v2', deliveryRoutesV2);
+  app.use('/api/v1/admin/delivery-routes', deliveryRouteRoutes);
+  app.use('/api/v1/admin/basic-route', basicRouteRoutes);
+  app.use('/api/v1/admin/delivery-vehicles', deliveryVehicleRoutes);
+  app.use('/api/v1/admin/auth', authRoutes);
+  app.use('/api/v1/admin/roles', roleRoutes);
+  app.use('/api/v1/admin/modules', moduleRoutes);
+  app.use('/api/v1/admin/profile', profileRoutes);
+  app.use('/api/v1/admin/inventory', InventoryRoutes);
+  app.use('/api/v1/admin/logs', logsRoutes);
+  app.use('/api/v1/admin/van-inventory', InVanInventoryRoutes);
+  app.use('/api/v1/admin/van-inventory-v2', InVanInventoryRoutesV2);
+  app.use('/api/v1/admin/coupons', couponsRoutes);
+  app.use('/api/v1/admin/terms-privacy', tosRoutes);
+  app.use('/api/v1/admin/fcm-tokens', fcmTokenRoutes);
+  app.use('/api/v1/admin/notifications', notificationRoutes);
+  app.use('/api/v1/admin/dashboard', dashboardRoutes);
+  app.use('/api/v1/admin/invoice', InvoiceRoutes);
+  app.use('/api/v1/admin/facetec', faceTecRoutes);
+  app.use('/api/v1/admin/company-config', companyConfigRoutes);
+  app.use('/api/v1/admin/partner', AssignOrderToPartnerRoutes);
+
+}

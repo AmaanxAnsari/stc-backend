@@ -1,0 +1,23 @@
+{
+    "env": {
+      "node": true,
+      "es2021": true
+    },
+    "globals": {
+      "process": "readonly",
+      "console": "readonly"
+    },
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "plugins": ["prettier"],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": false
+        }
+      ],
+      "no-undef": "off", // Ignore errors for process, require, module, etc.
+      "no-unused-vars": "warn" // Warn for unused variables instead of erroring
+    }
+  }
+  

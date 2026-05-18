@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running ESLint and Prettier checks..."
+
+npm run lint:fix
+
+# Run ESLint with verbose output
+echo "🔍 Running ESLint..."
+npm run lint -- --debug
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint failed. Here are the issues:"
+  npm run lint
+  exit 1
+fi
+
+# Format with Prettier
+echo "🔍 Running Prettier..."
+npx prettier --write "src/**/*.{js,jsx,json,ts,tsx}"
+if [ $? -ne 0 ]; then
+  echo "❌ Prettier failed. Please fix the issues and try again."
+  exit 1
+fi
+
+
+echo "✅ Code is clean. Proceeding with commit."
+exit 0
