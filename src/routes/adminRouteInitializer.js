@@ -29,11 +29,13 @@ import PaymentReceivedRoute from './admin/PaymentReceivedRoute.js';
 import faceTecRoutes from './admin/faceTecRoutes.js';
 import AssignOrderToPartnerRoutes from './admin/AssignOrderToPartnerRoutes.js';
 import enquiryRoutes from './admin/enquiryRoutes.js';
+import customerRoutes from './admin/customerRoutes.js';
 
 
 export default function adminRouteInitializer(app) {
   app.use('/api/v1/admin/users', userRoutes);
   app.use('/api/v1/admin/enquiries', enquiryRoutes);
+  app.use('/api/v1/admin/customers', customerRoutes);
   app.use('/api/v1/admin/category', categoryRoutes);
   app.use('/api/v1/admin/product', productRoutes);
   app.use('/api/v1/admin/app-orders', appOrderRoutes);

@@ -1,3 +1,4 @@
+import Customer from '../../models/admin/ConsumerModel.js';
 import Enquiry from '../../models/admin/enquiryModel.js';
 import { createRepository } from '../../utils/repository.js';
 
@@ -6,34 +7,117 @@ const enquiryRepo = createRepository(Enquiry, {
 });
 
 // CREATE ENQUIRY
+// export const createEnquiry = async (req, res) => {
+//   try {
+//     const { customerName, poNumber, enquiryText, includePartNumbers, items } =
+//       req.body;
+
+//     if (!req.user?.id) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'Unauthorized: User info missing.',
+//       });
+//     }
+
+//     if (!customerName?.trim()) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Customer name is required.',
+//       });
+//     }
+
+//     if (!items || !Array.isArray(items) || items.length === 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'At least one enquiry item is required.',
+//       });
+//     }
+
+//     const enquiry = new Enquiry({
+//       customerName,
+//       poNumber,
+//       enquiryText,
+//       includePartNumbers,
+//       items,
+//       createdBy: req.user.id,
+//       updatedBy: req.user.id,
+//     });
+
+//     await enquiry.save();
+
+//     return res.status(201).json({
+//       success: true,
+//       message: 'Enquiry created successfully.',
+//       data: enquiry,
+//     });
+//   } catch (error) {
+//     console.error('Create enquiry error:', error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Server error. ' + error.message,
+//     });
+//   }
+// };
 export const createEnquiry = async (req, res) => {
   try {
-    const { customerName, poNumber, enquiryText, includePartNumbers, items } =
-      req.body;
+    const {
+      customerName,
+      mobile,
+      email,
+      address,
+      city,
+      pincode,
+      poNumber,
+      enquiryText,
+      includePartNumbers,
+      items,
+    } = req.body;
 
     if (!req.user?.id) {
       return res.status(401).json({
         success: false,
-        message: 'Unauthorized: User info missing.',
+        message: 'Unauthorized',
       });
     }
 
     if (!customerName?.trim()) {
       return res.status(400).json({
         success: false,
-        message: 'Customer name is required.',
+        message: 'Customer name is required',
       });
     }
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'At least one enquiry item is required.',
+        message: 'At least one item is required',
       });
     }
 
-    const enquiry = new Enquiry({
-      customerName,
+    // CHECK EXISTING CUSTOMER
+    let customer = await Customer.findOne({
+      mobile,
+      isDeleted: false,
+    });
+
+    // CREATE CUSTOMER IF NOT EXISTS
+    if (!customer) {
+      customer = await Customer.create({
+        customerName,
+        mobile,
+        email,
+        address,
+        city,
+        pincode,
+        createdBy: req.user.id,
+        updatedBy: req.user.id,
+      });
+    }
+
+    // CREATE ENQUIRY
+    const enquiry = await Enquiry.create({
+      customer: customer._id,
       poNumber,
       enquiryText,
       includePartNumbers,
@@ -42,19 +126,21 @@ export const createEnquiry = async (req, res) => {
       updatedBy: req.user.id,
     });
 
-    await enquiry.save();
+    const populatedEnquiry = await Enquiry.findById(enquiry._id).populate(
+      'customer',
+    );
 
     return res.status(201).json({
       success: true,
-      message: 'Enquiry created successfully.',
-      data: enquiry,
+      message: 'Enquiry created successfully',
+      data: populatedEnquiry,
     });
   } catch (error) {
     console.error('Create enquiry error:', error);
 
     return res.status(500).json({
       success: false,
-      message: 'Server error. ' + error.message,
+      message: error.message,
     });
   }
 };
@@ -122,34 +208,146 @@ export const updateEnquiry = async (req, res) => {
 };
 
 // GET ALL ENQUIRIES
+// export const getAllEnquiries = async (req, res) => {
+//   try {
+//     const { page, limit, sort, q, isActive, status } = req.query;
+
+//     const filter = {};
+
+//     if (q) {
+//       filter.$or = [
+//         { customerName: { $regex: q, $options: 'i' } },
+//         { poNumber: { $regex: q, $options: 'i' } },
+//       ];
+//     }
+
+//     if (isActive != null) filter.isActive = isActive === 'true';
+
+//     if (status) filter.status = status;
+
+//     const result = await enquiryRepo.getAll({
+//       filter,
+//       sort: sort ? JSON.parse(sort) : undefined,
+//       page,
+//       limit,
+//       projection: {},
+//       collation: { locale: 'en', strength: 2 },
+//     });
+
+//     return res.status(result.status).json(result);
+//   } catch (err) {
+//     return res.status(500).json({
+//       success: false,
+//       status: 500,
+//       message: 'An unexpected error occurred.',
+//       error: err.message,
+//     });
+//   }
+// };
 export const getAllEnquiries = async (req, res) => {
   try {
-    const { page, limit, sort, q, isActive, status } = req.query;
+    const { page = 1, limit = 10, sort, q, isActive, status } = req.query;
 
-    const filter = {};
+    const filter = {
+      isDeleted: false,
+    };
 
+    // STATUS FILTER
+    if (status) {
+      filter.status = status;
+    }
+
+    // ACTIVE FILTER
+    if (isActive != null) {
+      filter.isActive = isActive === 'true';
+    }
+
+    // SEARCH
     if (q) {
+      // FIND MATCHING CUSTOMERS
+      const customers = await Customer.find({
+        isDeleted: false,
+        $or: [
+          {
+            customerName: {
+              $regex: q,
+              $options: 'i',
+            },
+          },
+          {
+            mobile: {
+              $regex: q,
+              $options: 'i',
+            },
+          },
+          {
+            email: {
+              $regex: q,
+              $options: 'i',
+            },
+          },
+          {
+            city: {
+              $regex: q,
+              $options: 'i',
+            },
+          },
+        ],
+      }).select('_id');
+
+      const customerIds = customers.map((customer) => customer._id);
+
       filter.$or = [
-        { customerName: { $regex: q, $options: 'i' } },
-        { poNumber: { $regex: q, $options: 'i' } },
+        {
+          customer: {
+            $in: customerIds,
+          },
+        },
+        {
+          poNumber: {
+            $regex: q,
+            $options: 'i',
+          },
+        },
       ];
     }
 
-    if (isActive != null) filter.isActive = isActive === 'true';
+    // SORT
+    let parsedSort = { createdAt: -1 };
 
-    if (status) filter.status = status;
+    if (sort) {
+      parsedSort = JSON.parse(sort);
+    }
 
-    const result = await enquiryRepo.getAll({
-      filter,
-      sort: sort ? JSON.parse(sort) : undefined,
-      page,
-      limit,
-      projection: {},
-      collation: { locale: 'en', strength: 2 },
+    // PAGINATION
+    const skip = (Number(page) - 1) * Number(limit);
+
+    // DATA
+    const enquiries = await Enquiry.find(filter)
+      .populate('customer')
+      .sort(parsedSort)
+      .skip(skip)
+      .limit(Number(limit));
+
+    // COUNT
+    const total = await Enquiry.countDocuments(filter);
+
+    return res.status(200).json({
+      success: true,
+      status: 200,
+
+      data: enquiries,
+
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / Number(limit)),
+      },
     });
-
-    return res.status(result.status).json(result);
   } catch (err) {
+    console.error('Get all enquiries error:', err);
+
     return res.status(500).json({
       success: false,
       status: 500,

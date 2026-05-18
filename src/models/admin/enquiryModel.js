@@ -48,12 +48,11 @@ const enquiryItemSchema = new mongoose.Schema(
 
 const enquirySchema = new mongoose.Schema(
   {
-    customerName: {
-      type: String,
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer',
       required: true,
-      trim: true,
     },
-
     poNumber: {
       type: String,
       trim: true,
