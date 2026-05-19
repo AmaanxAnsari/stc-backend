@@ -8,7 +8,7 @@ import {
   getQCOrderById,
   moveAllToCompleted,
   updateItemWeight,
-} from '../../controllers/admin/qualityCheckController.js';
+} from '../../controllers/admin/QualityCheckController.js';
 
 const router = express.Router();
 
