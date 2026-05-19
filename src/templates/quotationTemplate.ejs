@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .company-name {
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .sub-title {
+        font-size: 14px;
+      }
+
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #000;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .totals {
+        width: 300px;
+        margin-left: auto;
+        margin-top: 20px;
+      }
+
+      .signature {
+        margin-top: 80px;
+        text-align: right;
+      }
+
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="company-name">
+        SHREE TRADING COMPANY
+      </div>
+
+      <div class="sub-title">
+        Expert profile cutters of MS, E350,
+        SA516 Gr70
+      </div>
+    </div>
+
+    <div class="top-section">
+      <div>
+        <strong>To,</strong><br />
+
+        <%= enquiry.customer.customerName %><br />
+        <%= enquiry.customer.address %><br />
+        <%= enquiry.customer.mobile %><br />
+        <%= enquiry.customer.email %><br />
+
+
+      </div>
+
+      <div>
+        <strong>Date:</strong>
+        <%= new
+        Date(currentDate).toLocaleDateString() %>
+        <br />
+
+        <strong>Quotation No:</strong>
+        <%= quotationNo %>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>SR NO</th>
+          <th>TYPE</th>
+          <th>SIZE</th>
+          <th>QTY</th>
+          <th>WT</th>
+          <th>RATE/KG</th>
+          <th>AMOUNT</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% items.forEach((item, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+
+          <td><%= item.type %></td>
+
+          <td>
+            <%= item.length %> x <%=
+            item.width %> x <%=
+            item.thickness %>
+          </td>
+
+          <td><%= item.qty %></td>
+
+          <td><%= item.weight %></td>
+
+          <td><%= item.ratePerKg %></td>
+
+          <td><%= item.amount %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <table class="totals">
+      <tr>
+        <td>Subtotal</td>
+        <td><%= subtotal %></td>
+      </tr>
+
+      <tr>
+        <td>Loading</td>
+        <td><%= loading %></td>
+      </tr>
+
+      <tr>
+        <td>GST 18%</td>
+        <td><%= gstAmount %></td>
+      </tr>
+
+      <tr>
+        <td><strong>Total</strong></td>
+
+        <td>
+          <strong><%= totalAmount %></strong>
+        </td>
+      </tr>
+    </table>
+
+    <div class="signature">
+      Authorized Signature
+    </div>
+
+    <div class="footer">
+      Add: Sr No 99, Plot No 8, Yashwant Nagar,
+      Pune
+    </div>
+  </body>
+</html>

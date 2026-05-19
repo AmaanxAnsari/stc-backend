@@ -30,12 +30,22 @@ import faceTecRoutes from './admin/faceTecRoutes.js';
 import AssignOrderToPartnerRoutes from './admin/AssignOrderToPartnerRoutes.js';
 import enquiryRoutes from './admin/enquiryRoutes.js';
 import customerRoutes from './admin/customerRoutes.js';
+import quotationRoutes from './admin/QuotationRoutes.js';
+import InProgressRoutes from './admin/InProgressRoutes.js';
+import QualityCheckRoutes from './admin/QualityCheckRoutes.js';
+import CompleteRoutes from './admin/CompleteRoutes.js';
+import masterListRoute from './admin/masterListRoute.js';
 
 
 export default function adminRouteInitializer(app) {
   app.use('/api/v1/admin/users', userRoutes);
-  app.use('/api/v1/admin/enquiries', enquiryRoutes);
   app.use('/api/v1/admin/customers', customerRoutes);
+  app.use('/api/v1/admin/enquiries', enquiryRoutes);
+  app.use('/api/v1/admin/quotations', quotationRoutes);
+  app.use('/api/v1/admin/inprocess', InProgressRoutes);
+  app.use('/api/v1/admin/quality-check', QualityCheckRoutes);
+  app.use('/api/v1/admin/completed', CompleteRoutes);
+  app.use('/api/v1/admin/master-list', masterListRoute);
   app.use('/api/v1/admin/category', categoryRoutes);
   app.use('/api/v1/admin/product', productRoutes);
   app.use('/api/v1/admin/app-orders', appOrderRoutes);

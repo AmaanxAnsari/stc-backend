@@ -43,7 +43,6 @@ const enquiryItemSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { _id: false },
 );
 
 const enquirySchema = new mongoose.Schema(
@@ -81,7 +80,7 @@ const enquirySchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['pending', 'confirmed', 'completed', 'cancelled'],
+      enum: ['pending','quotation_generated', 'confirmed', 'completed', 'cancelled'],
       default: 'pending',
     },
 
