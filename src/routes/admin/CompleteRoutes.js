@@ -6,7 +6,7 @@ import {
   updateCompletedItemWeight,
   finishAndArchiveOrder,
   viewDeliveryChallan,
-} from '../../controllers/admin/completedController.js';
+} from '../../controllers/admin/CompletedController.js';
 
 const router = express.Router();
 
