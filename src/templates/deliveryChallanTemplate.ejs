@@ -1,12 +1,8 @@
-<!-- src/templates/deliveryChallanTemplate.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <title>Delivery Challan</title>
-
     <style>
       * {
         box-sizing: border-box;
@@ -14,19 +10,34 @@
 
       body {
         margin: 0;
-        padding: 25px;
+        padding: 30px;
         font-family: Arial, sans-serif;
         color: #222;
         position: relative;
+        font-size: 13px;
       }
 
-      .watermark {
+      /* Background Watermarks */
+      .watermark-logo {
         position: absolute;
-        top: 35%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
-        opacity: 0.05;
-        width: 450px;
+        opacity: 0.04;
+        width: 300px;
+        z-index: 0;
+      }
+
+      .watermark-text {
+        position: absolute;
+        bottom: 220px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 65px;
+        font-weight: bold;
+        color: transparent;
+        -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.06);
+        white-space: nowrap;
         z-index: 0;
       }
 
@@ -35,211 +46,204 @@
         z-index: 2;
       }
 
-      .top-logo {
+      /* Header Layout */
+      .header-container {
+        position: relative;
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+      }
+
+      .logo {
+        position: absolute;
+        top: 0;
+        left: 30px;
       }
 
       .company-box {
-        background: #666;
+        background: #555;
         color: white;
-        padding: 8px 20px;
+        padding: 6px 20px;
         display: inline-block;
-        font-size: 30px;
-        letter-spacing: 2px;
-        font-weight: 300;
+        font-size: 26px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      /* Making 'hree' smaller to match 'Shree' logo typography from image */
+      .company-box span {
+        font-size: 20px;
+        text-transform: lowercase;
       }
 
       .company-details {
         text-align: center;
-        font-size: 13px;
+        font-size: 11px;
         line-height: 1.5;
-        margin-top: 8px;
-      }
-
-      .gst {
-        font-weight: bold;
-        margin-top: 3px;
+        margin-top: 5px;
       }
 
       .title {
         text-align: center;
-        font-size: 40px;
+        font-size: 22px;
         font-weight: bold;
-        margin: 18px 0;
+        letter-spacing: 1px;
+        margin: 15px 0;
       }
 
+      /* Top Information Area */
       .top-section {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
-        margin-bottom: 25px;
+        line-height: 1.8;
       }
 
       .left-section,
       .right-section {
         width: 48%;
-        font-size: 15px;
-        line-height: 1.8;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #333;
+        margin: 15px 0;
       }
 
       .summary {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        font-size: 16px;
+        font-size: 13px;
         line-height: 1.8;
+        margin-bottom: 20px;
       }
 
+      /* Table Styles */
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 10px;
-        font-size: 14px;
+        font-size: 12px;
+        margin-bottom: 40px;
       }
 
       table th,
       table td {
-        border: 1px solid #555;
-        padding: 10px 6px;
+        border: 1px solid #000;
+        padding: 8px 4px;
         text-align: center;
       }
 
       table th {
         background: #f2f2f2;
+        font-weight: normal;
+        font-size: 11px;
       }
 
+      /* Footer Area */
       .footer {
-        margin-top: 120px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
       }
 
-      .receiver {
-        width: 45%;
+      .receiver-box {
+        line-height: 2;
       }
 
-      .receiver-sign {
-        margin-bottom: 40px;
+      .receiver-sign-space {
+        margin-top: 40px;
       }
 
       .signature-line {
-        border-top: 1px solid #000;
-        width: 200px;
-        margin-top: 10px;
-      }
-
-      .authorized {
-        width: 45%;
-        text-align: center;
+        border-bottom: 1px solid #333;
+        width: 180px;
+        margin-top: 30px;
+        margin-bottom: 5px;
       }
 
       .authorized-box {
-        background: #666;
+        text-align: center;
+      }
+
+      .auth-badge {
+        background: #555;
         color: white;
+        padding: 4px 15px;
+        font-size: 14px;
+        margin-bottom: 40px;
         display: inline-block;
-        padding: 6px 18px;
-        font-size: 18px;
-        margin-bottom: 25px;
       }
 
       .page-number {
         position: absolute;
-        bottom: 10px;
-        right: 20px;
+        bottom: 0;
+        right: 0;
         font-size: 12px;
       }
     </style>
   </head>
 
   <body>
-    <!-- WATERMARK -->
-    <img
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Logo.svg/512px-Logo.svg.png"
-      class="watermark"
-    />
+    <svg class="watermark-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 95,85 5,85" fill="none" stroke="#000" stroke-width="3"/>
+      <polygon points="50,15 63,38 37,38" fill="#000"/>
+      <polygon points="37,60 50,38 63,60" fill="#000"/>
+      <polygon points="24,83 37,60 50,83" fill="#000"/>
+      <polygon points="50,83 63,60 76,83" fill="#000"/>
+      <polygon points="50,60 63,83 37,83" fill="#000"/>
+    </svg>
+    <div class="watermark-text">SHREE TRADING COMPANY</div>
 
     <div class="container">
-      <!-- HEADER -->
-      <div class="top-logo">
+      <div class="header-container">
+        <svg class="logo" width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,5 95,85 5,85" fill="none" stroke="#333" stroke-width="3"/>
+          <polygon points="50,15 63,38 37,38" fill="#444"/>
+          <polygon points="37,60 50,38 63,60" fill="#444"/>
+          <polygon points="24,83 37,60 50,83" fill="#444"/>
+          <polygon points="50,83 63,60 76,83" fill="#444"/>
+          <polygon points="50,60 63,83 37,83" fill="#444"/>
+        </svg>
+
         <div class="company-box">
           SHREE TRADING COMPANY
         </div>
+<!-- 
+        <div class="company-box">
+          S<span>hree</span> TRADING COMPANY
+        </div> -->
 
         <div class="company-details">
-          Stockist & Traders of HR, CR, GP Sheet,
-          MS Plates, Structural <br />
-
-          Material and Expert Profile Cutters
-          <br />
-
-          Sr. no. 99, Plot no. 8, Yashwant Nagar
-          Chowk, Talco-Bhosari Road, Pune-18.
-          <br />
-
-          Email:
-          shreetradingunit2@gmail.com | Mobile no:
-          +91 8530022333
-
-          <div class="gst">
-            GST Number: 27ACBFS4283Q1ZP
-          </div>
+          Stockist & Traders of HR, CR, GP Sheet, MS Plates, Structural<br />
+          Material and Expert Profile Cutters<br />
+          Sr. no. 99, Plot no. 8, Yashwant Nagar Chowk, Telco-Bhosari Road, Pune-18.<br />
+          Email: shreetradingunit2@gmail.com | Mobile no.: +91 8530022333<br />
+          <strong>GST Number: 27ACBFS4283Q1ZF</strong>
         </div>
       </div>
 
-      <!-- TITLE -->
-      <div class="title">
-        DELIVERY CHALLAN
-      </div>
+      <div class="title">DELIVERY CHALLAN</div>
 
-      <!-- TOP INFO -->
       <div class="top-section">
         <div class="left-section">
-          <div>
-            <strong>To:</strong>
-            <%= order.customer?.customerName ||
-            order.customer?.name %>
-          </div>
-
-          <div>
-            <strong>Date:</strong>
-            <%= new
-            Date(currentDate).toLocaleDateString() %>
-          </div>
-
-          <div>
-            <strong>PO No :</strong>
-            <%= order.poNumber || "-" %>
-          </div>
+          <div>To: <%= order.customer?.customerName || order.customer?.name || "-" %></div>
+          <div>Date: <%= new Date(currentDate).toLocaleDateString('en-GB') %></div>
+          <div>PO NO : <%= order.poNumber || "-" %></div>
         </div>
 
         <div class="right-section">
-          <div>
-            <strong>Challan Number:</strong>
-            <%= challanNo %>
-          </div>
-
-          <div>
-            <strong>Transport :</strong>
-            <%= vehicleNumber %>
-          </div>
+          <div>Challan Number: <%= challanNo || "-" %></div>
+          <div>Transport : <%= vehicleNumber || "-" %></div>
         </div>
       </div>
 
-      <!-- SUMMARY -->
+      <hr class="divider" />
+
       <div class="summary">
-        <div>
-          <strong>Total Weight:</strong>
-          <%= totalWeight.toFixed(2) %> kg
-        </div>
-
-        <div>
-          <strong>Total CNC Rate:</strong>
-          ₹ <%= totalRate.toFixed(2) %>
-        </div>
+        <div>Total Weight: <%= (totalWeight || 0).toFixed(1) %> kg</div>
+        <div>Total CNC Rate: <%= totalRate ? totalRate : "" %></div>
       </div>
 
-      <!-- TABLE -->
       <table>
         <thead>
           <tr>
@@ -254,80 +258,39 @@
             <th>RATE / PCS</th>
           </tr>
         </thead>
-
         <tbody>
           <% items.forEach((item) => { %>
           <tr>
-            <td>
-              <%= item.programNo || "-" %>
-            </td>
-
-            <td>
-              <%= item.partNo || "-" %>
-            </td>
-
-            <td>
-              <%= item.thickness %>
-            </td>
-
-            <td>
-              <%= item.length %>
-            </td>
-
-            <td>
-              <%= item.width %>
-            </td>
-
-            <td>
-              <%= item.qty %>
-            </td>
-
-            <td>
-              <%= item.weight %>
-            </td>
-
-            <td>
-              <%= item.ratePerKg || "-" %>
-            </td>
-
-            <td>
-              ₹
-              <%= Number(item.amount || 0).toFixed(2)
-              %>
-            </td>
+            <td><%= item.programNo || "-" %></td>
+            <td><%= item.partNo || "-" %></td>
+            <td><%= item.thickness || "-" %></td>
+            <td><%= item.length || "-" %></td>
+            <td><%= item.width || "-" %></td>
+            <td><%= item.qty || "-" %></td>
+            <td><%= item.weight || "-" %></td>
+            <td><%= item.ratePerKg || "-" %></td>
+            <td><%= item.amount ? item.amount : "-" %></td>
           </tr>
           <% }) %>
         </tbody>
       </table>
+      
+      <div style="height: 150px;"></div>
 
-      <!-- FOOTER -->
       <div class="footer">
-        <!-- RECEIVER -->
-        <div class="receiver">
-          <div class="receiver-sign">
-            Receiver's Signature:
-          </div>
-
+        <div class="receiver-box">
+          <div class="receiver-sign-space">Receiver's Signature:</div>
           <div class="signature-line"></div>
-
-          <div style="margin-top: 20px">
-            Mobile no:
-          </div>
+          <div>Mobile no:</div>
         </div>
 
-        <!-- AUTHORIZED -->
-        <div class="authorized">
-          <div class="authorized-box">
-            SHREE TRADING COMPANY
-          </div>
-
-          <div>
-            Authorized Signature
-          </div>
+        <div class="authorized-box">
+          <div class="auth-badge">SHREE TRADING COMPANY</div>
+          <div>Authorized Signature</div>
         </div>
+
+        <!-- <div class="page-number">1</div> -->
       </div>
-
-      <div class="page-number">1</div>
     </div>
   </body>
 </html>

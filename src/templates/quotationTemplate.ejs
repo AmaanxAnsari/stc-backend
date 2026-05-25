@@ -4,98 +4,185 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        padding: 20px;
+        color: #222;
+        font-size: 13px;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .date-row {
+        text-align: right;
+        font-size: 11px;
+        margin-bottom: 5px;
+        padding-right: 40px;
+        text-transform: uppercase;
+        margin-top: 10px;
       }
 
-      .header {
+      .header-container {
+        position: relative;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        position: absolute;
+        top: 0;
+        left: 40px;
+      }
+
+      .company-name-wrapper {
+        display: inline-block;
+        background-color: #444; 
+        color: white;
+        padding: 6px 18px;
+        margin-bottom: 8px;
       }
 
       .company-name {
         font-size: 28px;
-        font-weight: bold;
+        font-weight: normal;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       .sub-title {
-        font-size: 14px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.4;
       }
 
       .top-section {
         display: flex;
         justify-content: space-between;
-        margin-top: 30px;
+        margin-top: 10px;
+        padding: 0 40px;
+      }
+
+      .address-block {
+        font-size: 12px;
+        font-style: italic; 
+        line-height: 1.5;
+      }
+
+      .left-block {
+        width: 50%;
+      }
+
+      .right-block {
+        width: 45%;
+        text-align: left;
+      }
+
+      .subject-line {
+        margin-top: 15px;
+      }
+
+      .indent {
+        padding-left: 20px;
       }
 
       table {
-        width: 100%;
+        width: calc(100% - 80px);
+        margin: 30px auto;
         border-collapse: collapse;
-        margin-top: 30px;
+        font-size: 12px;
       }
 
-      table,
-      th,
-      td {
+      th, td {
         border: 1px solid #000;
-      }
-
-      th,
-      td {
-        padding: 10px;
+        padding: 8px 6px;
         text-align: center;
       }
 
-      .totals {
-        width: 300px;
-        margin-left: auto;
-        margin-top: 20px;
+      th {
+        font-weight: bold;
+        background-color: #eaeaea; /* Slight grey for headers */
+      }
+
+      /* Removes borders for the empty space next to the totals */
+      .no-border-left {
+        border-left: none !important;
+        border-bottom: none !important;
+        border-top: none !important;
+      }
+
+      .totals-label {
+        font-weight: bold;
+        text-align: center;
       }
 
       .signature {
-        margin-top: 80px;
         text-align: right;
+        margin-top: 50px;
+        padding-right: 40px;
+        font-size: 14px;
       }
 
       .footer {
-        margin-top: 50px;
+        margin-top: 60px;
         text-align: center;
         font-size: 12px;
+        border-top: 1px solid #000;
+        padding-top: 10px;
+        width: calc(100% - 80px);
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
       }
     </style>
   </head>
 
   <body>
-    <div class="header">
-      <div class="company-name">
-        SHREE TRADING COMPANY
-      </div>
+    <div class="date-row">
+      DATE-<%= new Date(currentDate).toLocaleDateString('en-GB').replace(/\//g, '-') %>
+    </div>
 
+    <div class="header-container">
+      <div class="logo">
+        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,5 95,85 5,85" fill="none" stroke="#333" stroke-width="3"/>
+          <polygon points="50,15 63,38 37,38" fill="#444"/>
+          <polygon points="37,60 50,38 63,60" fill="#444"/>
+          <polygon points="24,83 37,60 50,83" fill="#444"/>
+          <polygon points="50,83 63,60 76,83" fill="#444"/>
+          <polygon points="50,60 63,83 37,83" fill="#444"/>
+        </svg>
+      </div>
+      
+      <div class="company-name-wrapper">
+        <span class="company-name">Shree TRADING COMPANY</span>
+      </div>
+      
       <div class="sub-title">
-        Expert profile cutters of MS, E350,
-        SA516 Gr70
+        Expert profile cuters of MS, E350, SA516 Gr70<br>
+        and dealers of Structural Steel
       </div>
     </div>
 
     <div class="top-section">
-      <div>
-        <strong>To,</strong><br />
-
-        <%= enquiry.customer.customerName %><br />
-        <%= enquiry.customer.address %><br />
-        <%= enquiry.customer.mobile %><br />
-        <%= enquiry.customer.email %><br />
-
-
+      <div class="address-block left-block">
+        To,<br>
+        &nbsp;&nbsp;&nbsp;<%= enquiry.customer.customerName %>,<br>
+        &nbsp;&nbsp;&nbsp;<%= enquiry.customer.address %>,<br>
+        &nbsp;&nbsp;&nbsp;<%= enquiry.customer.city %>-<%= enquiry.customer.pincode %>,<br>
+        <div class="subject-line">
+          Subject - Proforma Invoice,<br>
+          Dear sir,<br>
+          <div class="indent">Please find the attached proforma invoice,</div>
+          Billing Date - <%= new Date(currentDate).toLocaleDateString('en-GB').replace(/\//g, '-') %> and Dispatch Date - <%= new Date(currentDate.getTime() + 86400000).toLocaleDateString('en-GB').replace(/\//g, '-') %>
+        </div>
       </div>
 
-      <div>
-        <strong>Date:</strong>
-        <%= new
-        Date(currentDate).toLocaleDateString() %>
-        <br />
-
-        <strong>Quotation No:</strong>
-        <%= quotationNo %>
+      <div class="address-block right-block">
+        From,<br>
+        &nbsp;&nbsp;&nbsp;Shree Trading Company,<br>
+        &nbsp;&nbsp;&nbsp;Sr.No.99,Plot No.8,<br>
+        &nbsp;&nbsp;&nbsp;Yashwant Nagar Chowk,<br>
+        &nbsp;&nbsp;&nbsp;Telco-Bhosari Road, Pune-411018.<br>
+        &nbsp;&nbsp;&nbsp;Mb.No.-8530022333.<br>
+        &nbsp;&nbsp;&nbsp;GSTIN - 27ACBFS4283Q1ZF<br>
+        &nbsp;&nbsp;&nbsp;PO NO - / PI NO - <%= quotationNo %>
       </div>
     </div>
 
@@ -103,11 +190,11 @@
       <thead>
         <tr>
           <th>SR NO</th>
-          <th>TYPE</th>
-          <th>SIZE</th>
+          <th>GRADE</th>
+          <th>PLATE SIZE</th>
           <th>QTY</th>
-          <th>WT</th>
-          <th>RATE/KG</th>
+          <th>WT IN<br>KGS</th>
+          <th>RATE/-KGS</th>
           <th>AMOUNT</th>
         </tr>
       </thead>
@@ -116,59 +203,45 @@
         <% items.forEach((item, index) => { %>
         <tr>
           <td><%= index + 1 %></td>
-
           <td><%= item.type %></td>
-
-          <td>
-            <%= item.length %> x <%=
-            item.width %> x <%=
-            item.thickness %>
-          </td>
-
+          <td><%= item.length %>X<%= item.width %>X<%= item.thickness %></td>
           <td><%= item.qty %></td>
-
           <td><%= item.weight %></td>
-
           <td><%= item.ratePerKg %></td>
-
           <td><%= item.amount %></td>
         </tr>
         <% }) %>
+
+        <tr>
+          <td colspan="5" class="no-border-left"></td>
+          <td class="totals-label">LOADING</td>
+          <td><%= loading %></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="no-border-left"></td>
+          <td class="totals-label">TOTAL</td>
+          <td><%= subtotal + Number(loading) %></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="no-border-left"></td>
+          <td class="totals-label">18% GST</td>
+          <td><%= gstAmount %></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="no-border-left"></td>
+          <td class="totals-label" style="line-height: 1.2;">BILLING<br>AMOUNT</td>
+          <td><%= totalAmount %></td>
+        </tr>
       </tbody>
     </table>
 
-    <table class="totals">
-      <tr>
-        <td>Subtotal</td>
-        <td><%= subtotal %></td>
-      </tr>
-
-      <tr>
-        <td>Loading</td>
-        <td><%= loading %></td>
-      </tr>
-
-      <tr>
-        <td>GST 18%</td>
-        <td><%= gstAmount %></td>
-      </tr>
-
-      <tr>
-        <td><strong>Total</strong></td>
-
-        <td>
-          <strong><%= totalAmount %></strong>
-        </td>
-      </tr>
-    </table>
-
     <div class="signature">
-      Authorized Signature
+      Authorized Signatur
     </div>
 
     <div class="footer">
-      Add: Sr No 99, Plot No 8, Yashwant Nagar,
-      Pune
+      Add.: Sr. No. 99, Plot No. 8, Yashwant Nagar Chowk, Telco-Bhosari Road, Pune-18<br>
+      Mob No.: 8530022333 | Email: shree_tradingco@hotmail.com
     </div>
   </body>
 </html>
