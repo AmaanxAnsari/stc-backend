@@ -13,21 +13,21 @@ import {
 const router = express.Router();
 
 // CREATE
-router.post('/', hasPermission('Enquiry'), createEnquiry);
+router.post('/', createEnquiry);
 
 // UPDATE
-router.put('/:id', hasPermission('Enquiry'), updateEnquiry);
+router.put('/:id', updateEnquiry);
 
 // GET ALL
-router.get('/', hasPermission('Enquiry'), getAllEnquiries);
+router.get('/', getAllEnquiries);
 
 // GET SINGLE
-router.get('/:id', hasPermission('Enquiry'), getSingleEnquiry);
+router.get('/:id', getSingleEnquiry);
 
 // DELETE
-router.delete('/:id', hasPermission('Enquiry'), deleteEnquiry);
+router.delete('/:id', deleteEnquiry);
 
 // UPDATE STATUS
-router.put('/status/:id', hasPermission('Enquiry'), updateEnquiryStatus);
+router.put('/status/:id', updateEnquiryStatus);
 
 export default router;
