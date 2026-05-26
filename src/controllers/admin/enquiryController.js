@@ -73,6 +73,7 @@ export const createEnquiry = async (req, res) => {
       includePartNumbers,
       items,
     } = req.body;
+    console.log("req user", req.user);
 
     if (!req.user?.id) {
       return res.status(401).json({
