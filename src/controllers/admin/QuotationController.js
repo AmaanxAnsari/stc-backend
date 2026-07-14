@@ -347,7 +347,7 @@ export const generateQuotation = async (req, res) => {
 
     // ================= PUPPETEER CONFIG (LOCAL + SERVER) =================
 
-    // 1. Check karo ki code Render server par chal raha hai ya local pe
+    // Check karo ki code Render server par chal raha hai ya local pe
     const isRender = process.env.RENDER === 'true' || process.env.RENDER;
 
     let launchOptions = {
@@ -355,25 +355,18 @@ export const generateQuotation = async (req, res) => {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage', // Memory issues se bachata hai server par
+        '--disable-dev-shm-usage',
         '--disable-gpu',
       ],
     };
 
-    // 2. Agar Render par chal raha hai, to specific path provide karo
+    // Agar Render par hai, to global cash path use karega
     if (isRender) {
-      launchOptions.executablePath = path.join(
-        process.cwd(),
-        '.cache',
-        'puppeteer',
-        'chrome',
-        'linux-148.0.7778.167',
-        'chrome-linux64',
-        'chrome',
-      );
+      launchOptions.executablePath =
+        '/opt/render/.cache/puppeteer/chrome/linux-148.0.7778.167/chrome-linux64/chrome';
     }
 
-    // 3. Launch browser with dynamic options
+    // Launch browser
     const browser = await puppeteer.launch(launchOptions);
 
     const page = await browser.newPage();
