@@ -142,146 +142,6 @@ import Order from './../../models/admin/orderModel.js';
 //   }
 // };
 
-// export const generateQuotation = async (req, res) => {
-//   try {
-//     const { enquiryId, items, loading = 600 } = req.body;
-
-//     const enquiry = await Enquiry.findById(enquiryId).populate('customer');
-
-//     if (!enquiry) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Enquiry not found',
-//       });
-//     }
-
-//     // ================= CALCULATIONS =================
-
-//     let subtotal = 0;
-
-//     const updatedItems = enquiry.items.map((dbItem) => {
-//       const frontendItem = items.find(
-//         (i) => i.itemId === dbItem._id.toString(),
-//       );
-
-//       const weight = Number(frontendItem?.weight || 0);
-
-//       const ratePerKg = Number(frontendItem?.ratePerKg || 0);
-
-//       const amount = weight * ratePerKg;
-
-//       subtotal += amount;
-
-//       return {
-//         ...dbItem.toObject(),
-//         weight,
-//         ratePerKg,
-//         amount,
-//       };
-//     });
-
-//     const gstAmount = ((subtotal + Number(loading)) * 18) / 100;
-
-//     const totalAmount = subtotal + Number(loading) + gstAmount;
-
-//     const quotationNo = `QT-${Date.now()}`;
-
-//     // ================= TEMPLATE =================
-
-//     const templatePath = path.join(
-//       process.cwd(),
-//       'src/templates',
-//       'quotationTemplate.ejs',
-//     );
-
-//     const html = await ejs.renderFile(templatePath, {
-//       enquiry,
-//       quotationNo,
-//       items: updatedItems,
-//       subtotal,
-//       gstAmount,
-//       loading,
-//       totalAmount,
-//       currentDate: new Date(),
-//     });
-
-//     // ================= PUPPETEER =================
-
-//     const browser = await puppeteer.launch({
-//       headless: true,
-
-//       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-//     });
-
-//     const page = await browser.newPage();
-
-//     await page.setContent(html, {
-//       waitUntil: 'networkidle0',
-//     });
-
-//     // ================= PDF BUFFER =================
-
-//     const pdfBuffer = await page.pdf({
-//       format: 'A4',
-
-//       printBackground: true,
-
-//       preferCSSPageSize: true,
-
-//       margin: {
-//         top: '20px',
-//         right: '20px',
-//         bottom: '20px',
-//         left: '20px',
-//       },
-//     });
-
-//     await browser.close();
-
-//     // ================= SAVE DATA =================
-
-//     enquiry.quotation = {
-//       quotationNo,
-//       subtotal,
-//       gstAmount,
-//       loading,
-//       totalAmount,
-//       generatedAt: new Date(),
-//     };
-
-//     enquiry.status = 'quotation_generated';
-
-//     enquiry.items = updatedItems;
-
-//     await enquiry.save();
-
-//     // ================= SEND PDF =================
-
-//     const buffer = Buffer.from(pdfBuffer);
-
-//     res.writeHead(200, {
-//       'Content-Type': 'application/pdf',
-
-//       'Content-Length': buffer.length,
-
-//       'Content-Disposition': `inline; filename="${quotationNo}.pdf"`,
-
-//       'Cache-Control': 'no-store',
-//     });
-
-//     return res.end(buffer);
-//   } catch (error) {
-//     console.log(error);
-
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-
-
 export const generateQuotation = async (req, res) => {
   try {
     const { enquiryId, items, loading = 600 } = req.body;
@@ -345,12 +205,12 @@ export const generateQuotation = async (req, res) => {
       currentDate: new Date(),
     });
 
-    // ================= PUPPETEER CONFIG (LOCAL + SERVER) =================
+    // ================= PUPPETEER =================
 
-    // Check karo ki code Render server par chal raha hai ya local pe
-    const isRender = process.env.RENDER === 'true' || process.env.RENDER;
-
-    let launchOptions = {
+    // ================= PUPPETEER CONFIG =================
+    const browser = await puppeteer.launch({
+      // Agar Docker environment me path set hai to wo uthayega, local normal chalaoge to default uthayega
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
       headless: true,
       args: [
         '--no-sandbox',
@@ -358,17 +218,7 @@ export const generateQuotation = async (req, res) => {
         '--disable-dev-shm-usage',
         '--disable-gpu',
       ],
-    };
-
-    // Agar Render par hai, to global cash path use karega
-    if (isRender) {
-      launchOptions.executablePath =
-        '/opt/render/.cache/puppeteer/chrome/linux-148.0.7778.167/chrome-linux64/chrome';
-    }
-
-    // Launch browser
-    const browser = await puppeteer.launch(launchOptions);
-
+    });
     const page = await browser.newPage();
 
     await page.setContent(html, {
@@ -435,6 +285,10 @@ export const generateQuotation = async (req, res) => {
     });
   }
 };
+
+
+
+
 export const moveAllToInProcess = async (req, res) => {
   try {
     const { enquiryId } = req.body;

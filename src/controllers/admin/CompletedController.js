@@ -391,10 +391,17 @@ export const viewDeliveryChallan = async (req, res) => {
     // ======================================================
     // PDF
     // ======================================================
+    // ================= PUPPETEER CONFIG =================
     const browser = await puppeteer.launch({
+      // Agar Docker environment me path set hai to wo uthayega, local normal chalaoge to default uthayega
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
       headless: true,
-
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
     });
 
     const page = await browser.newPage();
