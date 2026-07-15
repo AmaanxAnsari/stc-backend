@@ -217,12 +217,16 @@ export const generateQuotation = async (req, res) => {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
+        '--disable-extensions',
       ],
     });
     const page = await browser.newPage();
 
+    // await page.setContent(html, {
+    //   waitUntil: 'networkidle0',
+    // });
     await page.setContent(html, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
     });
 
     // ================= PDF BUFFER =================

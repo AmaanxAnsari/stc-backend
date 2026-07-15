@@ -401,15 +401,18 @@ export const viewDeliveryChallan = async (req, res) => {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
+        '--disable-extensions',
       ],
     });
 
     const page = await browser.newPage();
 
+    // await page.setContent(html, {
+    //   waitUntil: 'networkidle0',
+    // });
     await page.setContent(html, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
     });
-
     const pdfBuffer = await page.pdf({
       format: 'A4',
 

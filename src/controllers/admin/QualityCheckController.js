@@ -469,16 +469,23 @@ export const generateDeliveryChallan = async (req, res) => {
     // PDF GENERATION
     // ======================================================
     const browser = await puppeteer.launch({
+      // Agar Docker environment me path set hai to wo uthayega, local normal chalaoge to default uthayega
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
       headless: true,
-
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-extensions',
+      ],
     });
 
     const page = await browser.newPage();
 
-    await page.setContent(html, {
-      waitUntil: 'networkidle0',
-    });
+await page.setContent(html, {
+  waitUntil: 'domcontentloaded',
+});
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
